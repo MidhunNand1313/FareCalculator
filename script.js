@@ -341,15 +341,21 @@ passengers.forEach((pax, index) => {
             $("#copyBtn").hide();
         }
     });
-    $("#copyBtn").click(function () {
-        let text = $("#result").text().trim();
-        if (!text) return;
+   $("#copyBtn").click(function () {
+    let text = $("#result").text().trim();
+    if (!text) return;
 
-        navigator.clipboard.writeText(text).then(() => {
-            $(this).text("✅");
-            setTimeout(() => $(this).text("📋"), 1000);
-        });
+    let btn = $(this);
+    navigator.clipboard.writeText(text).then(() => {
+        // Change the button content to the image
+        btn.html('<img src="green-check.png" alt="Copied" style="width:16px; height:16px;">');
+        
+        setTimeout(() => {
+            // Change it back to the clipboard icon after 1 second
+            btn.text("📋");
+        }, 1500);
     });
+});
         resetFormFields();
 });
 function resetFormFields() {

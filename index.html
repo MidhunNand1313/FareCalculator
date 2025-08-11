@@ -127,6 +127,13 @@ body {
   font-size: 14px;      /* smaller font also reduces height */
   line-height: 1.2;     /* tighter line height */
 }
+#copyBtn:hover {
+  background-color: rgba(0, 128, 0, 0.1); /* very light green background */
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+  transform: none;
+}
 
   </style>
 </head>
@@ -227,24 +234,33 @@ body {
   <button id="calc">Calculate</button>
 
   <div style="position: relative; margin-top: 15px;">
-  <pre id="result" style="margin: 0; padding-right: 24px;"></pre>
-  <button id="copyBtn" title="Copy to clipboard" style="
-      display: none;
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      padding: 0;
-      margin: 0;
-      width: auto;
-      height: auto;
-      line-height: 1;
-  ">
-    📋
-  </button>
+  <pre id="result" style="margin: 0; padding-right: 24px;">
+  </pre>
+<button id="copyBtn" title="Copy to clipboard" style="
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+    width: 32px;
+    height: 48px;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+">
+  <span id="clipboardIcon">📋</span>
+  <img id="checkIcon" src="green-check.png" alt="Copied" style="width:16px; height:16px; display:none;">
+  <span id="copyMsg" style="color: green; font-size: 10px; margin-top: 2px; display:none;">Copied!</span>
+</button>
+
+
 </div>
 
 
