@@ -28,7 +28,7 @@
 
     h2 {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
       background: linear-gradient(90deg, #007BFF, #00C6FF);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -124,7 +124,7 @@
 <body>
 
 <div class="container">
-  <h2>Fare Split Calculator</h2>
+  <h2>Split Fare Calculator</h2>
 
   <div class="form-row">
     <label for="fareAdult">Fare per Adult:</label>
@@ -209,7 +209,7 @@
   </div>
 
   <fieldset>
-    <legend>Traveler Ticket Type:</legend>
+    <legend>Trip Purpose:</legend>
     <label><input type="radio" name="ticketType" value="monthly"> Monthly Ticket</label>
     <label><input type="radio" name="ticketType" value="discounted"> Discounted Ticket</label>
     <label><input type="radio" name="ticketType" value="monthly+discounted"> Monthly + Discount Ticket</label>
@@ -217,9 +217,27 @@
 
   <button id="calc">Calculate</button>
 
-  <h3>Results</h3>
-  <pre id="result"></pre>
+  <div style="position: relative; margin-top: 15px;">
+  <pre id="result" style="margin: 0; padding-right: 24px;"></pre>
+  <button id="copyBtn" title="Copy to clipboard" style="
+      display: none;
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+      margin: 0;
+      width: auto;
+      height: auto;
+      line-height: 1;
+  ">
+    📋
+  </button>
 </div>
+
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

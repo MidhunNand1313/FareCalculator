@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $("#calc").click(function () {
         // Separate fares for each type
+    
         let fareAdult = parseFloat($("#fareAdult").val()) || 0;
         let fareChild = parseFloat($("#fareChild").val()) || 0;
         let fareInfant = parseFloat($("#fareInfant").val()) || 0;
@@ -8,6 +9,11 @@ $(document).ready(function () {
         let adults = parseInt($("#adults").val()) || 0;
         let children = parseInt($("#children").val()) || 0;
         let infants = parseInt($("#infants").val()) || 0;
+
+        if (infants > adults) {
+        alert("Infant count should not exceed Adult count.");
+        return; // Stop here — don't run the calculation
+    }
 
         // Validation for fares if passengers selected
     if (adults > 0 && fareAdult <= 0) {
@@ -31,7 +37,7 @@ $(document).ready(function () {
         let totalFare = (fareAdult * adults) + (fareChild * children) + (fareInfant * infants);
 
 if (ticketType === "monthly+discounted" && totalPax < 2) {
-    alert("Monthly + Discounted ticket requires at least 2 passengers.");
+    alert("Monthly + Discount ticket requires at least 2 passengers.");
     return;
 }
 
@@ -234,6 +240,7 @@ passengers.forEach((pax, index) => {
             result.CCTotalCharges = CCTotalCharges;
         }
 
+        
         // Final safeguard rounding (optional)
         for (let key in result) {
             if (typeof result[key] === "number") {
@@ -242,5 +249,38 @@ passengers.forEach((pax, index) => {
         }
 
         $("#result").text(JSON.stringify(result, null, 2));
+
+        // Show/hide copy button based on content
+        if ($("#result").text().trim() !== "") {
+            $("#copyBtn").show();
+        } else {
+            $("#copyBtn").hide();
+        }
     });
+    $("#copyBtn").click(function () {
+        let text = $("#result").text().trim();
+        if (!text) return;
+
+        navigator.clipboard.writeText(text).then(() => {
+            $(this).text("✅");
+            setTimeout(() => $(this).text("📋"), 1000);
+        });
+    });
+        resetFormFields();
 });
+function resetFormFields() {
+    $("#fareAdult").val("0");
+    $("#fareChild").val("0");
+    $("#fareInfant").val("0");
+
+    $("#adults").val("1");
+    $("#children").val("0");
+    $("#infants").val("0");
+
+    $("#tripType").val("oneway");
+    $("#travelClass").val("economy");
+    $("input[name='ticketType']").prop("checked", false);
+
+    $("#result").text("");
+    $("#copyBtn").hide(); // ensure copy button hidden on load/reset
+}
