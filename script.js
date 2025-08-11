@@ -33,6 +33,11 @@ $(document).ready(function () {
         let travelClass = $("#travelClass").val().toLowerCase();
         let ticketType = $("input[name='ticketType']:checked").val();
 
+        if (!ticketType) {
+    alert("Please select a trip purpose before calculating.");
+    return;
+}
+
         let totalPax = adults + children + infants;
         let totalFare = (fareAdult * adults) + (fareChild * children) + (fareInfant * infants);
 
