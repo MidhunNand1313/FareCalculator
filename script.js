@@ -1,4 +1,15 @@
 $(document).ready(function () {
+     $("#fareAdult, #fareChild, #fareInfant").focus(function() {
+      if ($(this).val() === "0") {
+        $(this).val("");
+      }
+    });
+
+    $("#fareAdult, #fareChild, #fareInfant").blur(function() {
+      if ($(this).val().trim() === "") {
+        $(this).val("0");
+      }
+    });
     $("#calc").click(function () {
         // Separate fares for each type
     
