@@ -15,7 +15,7 @@ $(document).ready(function () {
             icon: 'error',
             title: 'Oops...',
             text: 'Infant count should not exceed Adult count.',
-            width: '300px',
+            width: '340px',
             customClass: {
             popup: 'small-swal-popup'
             }
@@ -29,7 +29,7 @@ $(document).ready(function () {
     icon: 'error',
     title: 'Oops...',
     text: 'You need to select at least one adult to continue.',
-    width: '300px',
+    width: '340px',
     customClass: {
       popup: 'small-swal-popup'
     }
@@ -42,7 +42,7 @@ $(document).ready(function () {
             icon: 'error',
             title: 'Oops...',
             text: 'Please enter a valid fare for Adult passengers.',
-            width: '300px',
+            width: '340px',
             customClass: {
             popup: 'small-swal-popup'
             }
@@ -54,7 +54,7 @@ $(document).ready(function () {
             icon: 'error',
             title: 'Oops...',
             text: 'Please enter a valid fare for Child passengers.',
-            width: '300px',
+            width: '340px',
             customClass: {
             popup: 'small-swal-popup'
             }
@@ -66,7 +66,7 @@ $(document).ready(function () {
             icon: 'error',
             title: 'Oops...',
             text: 'Please enter a valid fare for Infant passengers.',
-            width: '300px',
+            width: '340px',
             customClass: {
             popup: 'small-swal-popup'
             }
@@ -83,7 +83,7 @@ $(document).ready(function () {
             icon: 'error',
             title: 'Oops...',
             text: 'Please select a trip purpose before calculating.',
-            width: '300px',
+            width: '340px',
             customClass: {
             popup: 'small-swal-popup'
             }
@@ -100,7 +100,7 @@ $(document).ready(function () {
             icon: 'error',
             title: 'Oops...',
             text: 'Monthly + Discount ticket requires at least 2 passengers.',
-            width: '300px',
+            width: '340px',
             customClass: {
             popup: 'small-swal-popup'
             }
@@ -124,7 +124,7 @@ $(document).ready(function () {
             icon: 'error',
             title: 'Oops...',
             text: 'Please enter valid fare amounts.',
-            width: '300px',
+            width: '340px',
             customClass: {
             popup: 'small-swal-popup'
             }
@@ -138,7 +138,7 @@ $(document).ready(function () {
             icon: 'error',
             title: 'Oops...',
             text: 'Monthly ticket is allowed for only 1 passenger.',
-            width: '300px',
+            width: '340px',
             customClass: {
             popup: 'small-swal-popup'
             }
