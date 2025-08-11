@@ -10,41 +10,103 @@ $(document).ready(function () {
         let children = parseInt($("#children").val()) || 0;
         let infants = parseInt($("#infants").val()) || 0;
 
-        if (infants > adults) {
-        alert("Infant count should not exceed Adult count.");
-        return; // Stop here — don't run the calculation
-    }
+                if (infants > adults) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Infant count should not exceed Adult count.',
+            width: '300px',
+            customClass: {
+            popup: 'small-swal-popup'
+            }
+        });
+        return; // Stop execution after showing alert
+        }
 
-        // Validation for fares if passengers selected
-    if (adults > 0 && fareAdult <= 0) {
-        alert("Please enter a valid fare amount for Adult passengers.");
-        return;
+
+   if (adults < 1) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'You need to select at least one adult to continue.',
+    width: '300px',
+    customClass: {
+      popup: 'small-swal-popup'
     }
-    if (children > 0 && fareChild <= 0) {
-        alert("Please enter a valid fare amount for Child passengers.");
+  });
+  return;  // STOP further execution
+}
+
+        if (adults > 0 && fareAdult <= 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please enter a valid fare for Adult passengers.',
+            width: '300px',
+            customClass: {
+            popup: 'small-swal-popup'
+            }
+        });
         return;
-    }
-    if (infants > 0 && fareInfant <= 0) {
-        alert("Please enter a valid fare amount for Infant passengers.");
+        }
+        if (children > 0 && fareChild <= 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please enter a valid fare for Child passengers.',
+            width: '300px',
+            customClass: {
+            popup: 'small-swal-popup'
+            }
+        });
         return;
-    }
+        }
+        if (infants > 0 && fareInfant <= 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please enter a valid fare for Infant passengers.',
+            width: '300px',
+            customClass: {
+            popup: 'small-swal-popup'
+            }
+        });
+        return;
+        }
 
         let tripType = $("#tripType").val().toLowerCase();
         let travelClass = $("#travelClass").val().toLowerCase();
         let ticketType = $("input[name='ticketType']:checked").val();
 
-        if (!ticketType) {
-    alert("Please select a trip purpose before calculating.");
-    return;
-}
+            if (!ticketType) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please select a trip purpose before calculating.',
+            width: '300px',
+            customClass: {
+            popup: 'small-swal-popup'
+            }
+        });
+        return;
+        }
+
 
         let totalPax = adults + children + infants;
         let totalFare = (fareAdult * adults) + (fareChild * children) + (fareInfant * infants);
 
-if (ticketType === "monthly+discounted" && totalPax < 2) {
-    alert("Monthly + Discount ticket requires at least 2 passengers.");
-    return;
-}
+        if (ticketType === "monthly+discounted" && totalPax < 2) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Monthly + Discount ticket requires at least 2 passengers.',
+            width: '300px',
+            customClass: {
+            popup: 'small-swal-popup'
+            }
+        });
+        return;
+        }
 
         let result = {
             CCTotalCharges: 0,
@@ -57,16 +119,33 @@ if (ticketType === "monthly+discounted" && totalPax < 2) {
             PCInfantAmount: 0
         };
 
-        if ((fareAdult < 0) || (fareChild < 0) || (fareInfant < 0)) {
-            alert("Please enter valid fare amounts.");
-            return;
+                if ((fareAdult < 0) || (fareChild < 0) || (fareInfant < 0)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please enter valid fare amounts.',
+            width: '300px',
+            customClass: {
+            popup: 'small-swal-popup'
+            }
+        });
+        return;
         }
 
         // Monthly: only 1 pax allowed
         if (ticketType === "monthly" && totalPax > 1) {
-            alert("Monthly ticket is allowed for only 1 passenger.");
-            return;
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Monthly ticket is allowed for only 1 passenger.',
+            width: '300px',
+            customClass: {
+            popup: 'small-swal-popup'
+            }
+        });
+        return;
         }
+
 
         // Helper function for rounding to 2 decimals
         function round2(n) {
