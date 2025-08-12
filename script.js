@@ -361,13 +361,12 @@ $("#result").text(resultText).show();
 
     let btn = $(this);
     navigator.clipboard.writeText(text).then(() => {
-        // Show green check icon
-        btn.html('<img src="check-mark.png" alt="Copied" style="width:16px; height:16px;">');
+        btn.html('<img src="icons8-tick.gif" alt="Copied" style="width:16px; height:16px;">');
 
         setTimeout(() => {
             // Revert back to the interface.png copy icon
             btn.html('<img src="interface.png" alt="Copy" style="width:16px; height:16px;">');
-        }, 1500);
+        }, 1750);
     });
 });
 $("#result").hide();
