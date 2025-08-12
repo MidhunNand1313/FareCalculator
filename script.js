@@ -359,7 +359,7 @@ passengers.forEach((pax, index) => {
     let btn = $(this);
     navigator.clipboard.writeText(text).then(() => {
         // Show green check icon
-        btn.html('<img src="green-check.png" alt="Copied" style="width:16px; height:16px;">');
+        btn.html('<img src="check-mark.png" alt="Copied" style="width:16px; height:16px;">');
 
         setTimeout(() => {
             // Revert back to the interface.png copy icon
