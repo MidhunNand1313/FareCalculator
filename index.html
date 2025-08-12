@@ -135,6 +135,50 @@ body {
   transform: none;
 }
 
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  flex: 1;
+  margin-right: 20px; /* more gap between label & input */
+  font-weight: 600;
+}
+
+.input-group-box {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 15px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.input-group-box {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 15px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  flex: 1;
+  margin-right: 20px;
+  font-weight: 600;
+}
+
+
   </style>
 </head>
 <body>
@@ -142,6 +186,7 @@ body {
 <div class="container">
   <h2>Split Fare Calculator</h2>
 
+ <div class="input-group-box">
   <div class="form-row">
     <label for="fareAdult">Fare per Adult:</label>
     <input type="number" id="fareAdult" value="0">
@@ -156,8 +201,10 @@ body {
     <label for="fareInfant">Fare per Infant:</label>
     <input type="number" id="fareInfant" value="0">
   </div>
+</div>
 
-  <div class="form-row">
+<div class="input-group-box">
+   <div class="form-row">
     <label>Number of Adults:</label>
     <select id="adults">
       <option value="0">0</option>
@@ -207,7 +254,12 @@ body {
       <option value="10">10</option>
     </select>
   </div>
+</div>
 
+ 
+
+  <!-- Box for Trip Type & Cabin Class -->
+<div class="input-group-box">
   <div class="form-row">
     <label>Trip Type:</label>
     <select id="tripType">
@@ -223,6 +275,8 @@ body {
       <option value="business">Business</option>
     </select>
   </div>
+</div>
+
 
   <fieldset>
     <legend>Trip Purpose:</legend>
