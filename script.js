@@ -347,7 +347,7 @@ let resultText = Object.entries(result)
     .map(([key, value]) => `"${key}": ${value}`)
     .join(",\n");
 
-$("#result").text(resultText);
+$("#result").text(resultText).show();
         // Show/hide copy button based on content
         if ($("#result").text().trim() !== "") {
             $("#copyBtn").show();
@@ -370,6 +370,7 @@ $("#result").text(resultText);
         }, 1500);
     });
 });
+$("#result").hide();
 
         resetFormFields();
 });
