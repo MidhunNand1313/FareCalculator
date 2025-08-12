@@ -348,6 +348,10 @@ let resultText = Object.entries(result)
     .join(",\n");
 
 $("#result").text(resultText).show();
+        $('html, body').animate({
+            scrollTop: $("#result").offset().top - 20 // 20px above the result
+        }, 500);
+
         // Show/hide copy button based on content
         if ($("#result").text().trim() !== "") {
             $("#copyBtn").show();
