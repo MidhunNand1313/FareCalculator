@@ -352,21 +352,22 @@ passengers.forEach((pax, index) => {
             $("#copyBtn").hide();
         }
     });
-   $("#copyBtn").click(function () {
+  $("#copyBtn").click(function () {
     let text = $("#result").text().trim();
     if (!text) return;
 
     let btn = $(this);
     navigator.clipboard.writeText(text).then(() => {
-        // Change the button content to the image
+        // Show green check icon
         btn.html('<img src="green-check.png" alt="Copied" style="width:16px; height:16px;">');
-        
+
         setTimeout(() => {
-            // Change it back to the clipboard icon after 1 second
-            btn.text("📋");
+            // Revert back to the interface.png copy icon
+            btn.html('<img src="interface.png" alt="Copy" style="width:16px; height:16px;">');
         }, 1500);
     });
 });
+
         resetFormFields();
 });
 function resetFormFields() {
