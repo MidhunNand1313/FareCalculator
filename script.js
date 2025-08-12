@@ -343,8 +343,11 @@ passengers.forEach((pax, index) => {
             }
         }
 
-        $("#result").text(JSON.stringify(result, null, 2));
+let resultText = Object.entries(result)
+    .map(([key, value]) => `"${key}": ${value}`)
+    .join(",\n");
 
+$("#result").text(resultText);
         // Show/hide copy button based on content
         if ($("#result").text().trim() !== "") {
             $("#copyBtn").show();
