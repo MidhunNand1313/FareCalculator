@@ -1,6 +1,8 @@
 $(document).ready(function () {
+    // Track last calculated state
     let lastCalculatedState = null;
 
+    // Function to get current form state
     function getCurrentFormState() {
         return {
             fareAdult: $("#fareAdult").val(),
@@ -15,20 +17,25 @@ $(document).ready(function () {
         };
     }
 
+    // Function to check if form state has changed
     function hasFormChanged() {
         if (!lastCalculatedState) return true;
+        
         let currentState = getCurrentFormState();
         return JSON.stringify(currentState) !== JSON.stringify(lastCalculatedState);
     }
 
-    $("#fareAdult, #fareChild, #fareInfant").focus(function() {
-        if ($(this).val() === "0") $(this).val("");
+     $("#fareAdult, #fareChild, #fareInfant").focus(function() {
+      if ($(this).val() === "0") {
+        $(this).val("");
+      }
     });
 
     $("#fareAdult, #fareChild, #fareInfant").blur(function() {
-        if ($(this).val().trim() === "") $(this).val("0");
+      if ($(this).val().trim() === "") {
+        $(this).val("0");
+      }
     });
-
     $("#calc").click(function () {
         // Get all values first for validation
         let fareAdult = parseFloat($("#fareAdult").val()) || 0;
@@ -444,36 +451,40 @@ $(document).ready(function () {
             }
         }, 500); // 500ms delay to show loader
     });
+  $("#copyBtn").click(function () {
+    let text = $("#result").text().trim();
+    if (!text) return;
 
+    let btn = $(this);
+    navigator.clipboard.writeText(text).then(() => {
+        btn.html('<img src="icons8-tick.gif" alt="Copied" style="width:16px; height:16px;">');
 
-    $("#copyBtn").click(function () {
-        let text = $("#result").text().trim();
-        if (!text) return;
-
-        let btn = $(this);
-        navigator.clipboard.writeText(text).then(() => {
-            btn.html('<img src="icons8-tick.gif" alt="Copied" style="width:16px; height:16px;">');
-            setTimeout(() => {
-                btn.html('<img src="interface.png" alt="Copy" style="width:16px; height:16px;">');
-            }, 1750);
-        });
+        setTimeout(() => {
+            // Revert back to the interface.png copy icon
+            btn.html('<img src="interface.png" alt="Copy" style="width:16px; height:16px;">');
+        }, 1750);
     });
-
-    $("#result").hide();
-    resetFormFields();
-
-    function resetFormFields() {
-        $("#fareAdult").val("0");
-        $("#fareChild").val("0");
-        $("#fareInfant").val("0");
-        $("#adults").val("1");
-        $("#children").val("0");
-        $("#infants").val("0");
-        $("#tripType").val("oneway");
-        $("#travelClass").val("economy");
-        $("input[name='ticketType']").prop("checked", false);
-        $("#result").text("");
-        $("#copyBtn").hide();
-        lastCalculatedState = null;
-    }
 });
+$("#result").hide();
+
+        resetFormFields();
+});
+function resetFormFields() {
+    $("#fareAdult").val("0");
+    $("#fareChild").val("0");
+    $("#fareInfant").val("0");
+
+    $("#adults").val("1");
+    $("#children").val("0");
+    $("#infants").val("0");
+
+    $("#tripType").val("oneway");
+    $("#travelClass").val("economy");
+    $("input[name='ticketType'][value='monthly']").prop("checked", true);
+
+    $("#result").text("");
+    $("#copyBtn").hide(); // ensure copy button hidden on load/reset
+    
+    // Reset the last calculated state
+    lastCalculatedState = null;
+}
