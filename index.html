@@ -179,6 +179,64 @@ pre {
   font-weight: 600;
   font-size: 14px;
 }
+
+/* Copy Popup Styles */
+.result-container {
+  position: relative;
+  margin-top: 15px;
+}
+
+.copy-popup {
+  position: absolute;
+  top: 80%;
+  right: 12px;
+  transform: translateY(-50%) translateX(100%);
+  background: white;
+  color: #333;
+  padding: 12px 16px 12px 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  opacity: 0;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  display: flex;
+  align-items: center;
+}
+
+.copy-popup.show {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-10px);
+}
+
+.copy-popup::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(90deg, #007BFF, #00C6FF);
+  border-radius: 4px 0 0 4px;
+}
+
+.copy-popup .checkmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(90deg, #007BFF, #00C6FF);
+  color: white;
+  border-radius: 50%;
+  margin-right: 8px;
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
   </style>
 </head>
 <body>
@@ -275,7 +333,7 @@ pre {
   <!-- Trip Purpose -->
   <fieldset>
     <legend>Trip Purpose:</legend>
-    <label><input type="radio" name="ticketType" value="monthly"> Monthly Ticket</label>
+    <label><input type="radio" name="ticketType" value="monthly" checked> Monthly Ticket</label>
     <label><input type="radio" name="ticketType" value="discounted"> Discounted Ticket</label>
     <label><input type="radio" name="ticketType" value="monthly+discounted"> Monthly + Discount Ticket</label>
   </fieldset>
@@ -289,7 +347,7 @@ pre {
   </div>
 
   <!-- Result & Copy Button -->
-  <div style="position: relative; margin-top: 15px;">
+  <div class="result-container">
     <pre id="result" style="margin: 0; padding-right: 24px; display:none;"></pre>
     <button id="copyBtn" title="Copy to clipboard" style="
       position: absolute;
@@ -314,6 +372,12 @@ pre {
       <img id="checkIcon" src="icons8-tick.gif" alt="Copied" style="width:16px; height:16px; display:none;">
       <span id="copyMsg" style="color: green; font-size: 10px; margin-top: 2px; display:none;">Copied!</span>
     </button>
+    
+    <!-- Copy Success Popup -->
+    <div class="copy-popup" id="copyPopup">
+      <span class="checkmark">✓</span>
+      Copied to clipboard
+    </div>
   </div>
 </div>
 
@@ -321,6 +385,5 @@ pre {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
