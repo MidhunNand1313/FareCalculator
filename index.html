@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="newlogo.png">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <title>Fare Split Calculator</title>
   <style>
 body {
@@ -13,179 +13,137 @@ body {
   color: #222;
 }
 
-
-    .container {
-      max-width: 650px;
-      margin: 0 auto;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      border: none;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 40px;
-      background: linear-gradient(90deg, #007BFF, #00C6FF);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 28px;
-    }
-
-    .form-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    label {
-      flex: 1;
-      margin-right: 10px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    input[type="number"], select {
-      flex: 1;
-      padding: 8px 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      transition: border 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    input[type="number"]:focus, select:focus {
-      border-color: #007BFF;
-      box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
-      outline: none;
-    }
-
-    fieldset {
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 12px;
-      margin-top: 15px;
-      background-color: #f9fbff;
-    }
-
-    fieldset legend {
-      font-weight: bold;
-      padding: 0 5px;
-      color: #007BFF;
-    }
-
-    fieldset label {
-      display: block;
-      margin: 5px 0;
-      font-weight: normal;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 15px;
-      background: linear-gradient(90deg, #007BFF, #00C6FF);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    h3 {
-      margin-top: 20px;
-      color: #333;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 5px;
-    }
-
-    pre {
-      background: #f5f7fa;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      margin-top: 10px;
-      font-size: 14px;
-      line-height: 1.4;
-      overflow-x: auto;
-    }
-    .small-swal-popup {
-  padding: 15px 20px;   /* less padding reduces height */
-  font-size: 14px;      /* smaller font also reduces height */
-  line-height: 1.2;     /* tighter line height */
+.container {
+  max-width: 650px;
+  margin: 0 auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  animation: fadeIn 0.5s ease-in-out;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  background: linear-gradient(90deg, #007BFF, #00C6FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 28px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+label {
+  flex: 1;
+  margin-right: 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+input[type="number"], select {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="number"]:focus, select:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: #f9fbff;
+}
+
+fieldset legend {
+  font-weight: bold;
+  padding: 0 5px;
+  color: #007BFF;
+}
+
+fieldset label {
+  display: block;
+  margin: 5px 0;
+  font-weight: normal;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: linear-gradient(90deg, #007BFF, #00C6FF);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+h3 {
+  margin-top: 20px;
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 5px;
+}
+
+pre {
+  background: #f5f7fa;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-x: auto;
+}
+
+.small-swal-popup {
+  padding: 15px 20px;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
 #copyBtn:hover {
-  background-color: rgba(0, 128, 0, 0.1); /* very light green background */
+  background-color: rgba(0, 128, 0, 0.1);
   cursor: pointer;
   outline: none;
   box-shadow: none;
   transform: none;
 }
 
-.form-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.form-row label {
-  flex: 1;
-  margin-right: 20px; /* more gap between label & input */
-  font-weight: 600;
-}
-
 .input-group-box {
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 6px;
   padding: 12px;
   margin-bottom: 15px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-.input-group-box {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 12px;
-  margin-bottom: 15px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.form-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.form-row label {
-  flex: 1;
-  margin-right: 20px;
-  font-weight: 600;
-}
-
-.input-group-box {
-  border: none; /* No border by default */
-  border-radius: 6px;
-  padding: 12px;
-  margin-bottom: 15px;
-  background: transparent; /* No background by default */
-  transition: all 0.3s ease; /* Smooth hover animation */
+  background: transparent;
+  transition: all 0.3s ease;
 }
 
 .input-group-box:hover {
@@ -194,6 +152,33 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
+/* Loader Styles */
+#loader {
+  display: none;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #007BFF;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-text {
+  color: #007BFF;
+  font-weight: 600;
+  font-size: 14px;
+}
   </style>
 </head>
 <body>
@@ -201,98 +186,93 @@ body {
 <div class="container">
   <h2>Split Fare Calculator</h2>
 
- <div class="input-group-box">
-  <div class="form-row">
-    <label for="fareAdult">Fare per Adult:</label>
-    <input type="number" id="fareAdult" value="0">
+  <!-- Fare Inputs -->
+  <div class="input-group-box">
+    <div class="form-row">
+      <label for="fareAdult">Fare per Adult:</label>
+      <input type="number" id="fareAdult" value="0">
+    </div>
+    <div class="form-row">
+      <label for="fareChild">Fare per Child:</label>
+      <input type="number" id="fareChild" value="0">
+    </div>
+    <div class="form-row">
+      <label for="fareInfant">Fare per Infant:</label>
+      <input type="number" id="fareInfant" value="0">
+    </div>
   </div>
 
-  <div class="form-row">
-    <label for="fareChild">Fare per Child:</label>
-    <input type="number" id="fareChild" value="0">
+  <!-- Passenger Counts -->
+  <div class="input-group-box">
+    <div class="form-row">
+      <label>Number of Adults:</label>
+      <select id="adults">
+        <option value="0">0</option>
+        <option value="1" selected>1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Number of Children:</label>
+      <select id="children">
+        <option value="0" selected>0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Number of Infants:</label>
+      <select id="infants">
+        <option value="0" selected>0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+    </div>
   </div>
 
-  <div class="form-row">
-    <label for="fareInfant">Fare per Infant:</label>
-    <input type="number" id="fareInfant" value="0">
-  </div>
-</div>
-
-<div class="input-group-box">
-   <div class="form-row">
-    <label>Number of Adults:</label>
-    <select id="adults">
-      <option value="0">0</option>
-      <option value="1" selected>1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-    </select>
+  <!-- Trip Type & Cabin Class -->
+  <div class="input-group-box">
+    <div class="form-row">
+      <label>Trip Type:</label>
+      <select id="tripType">
+        <option value="oneway">Oneway</option>
+        <option value="roundtrip">Roundtrip</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Cabin Class:</label>
+      <select id="travelClass">
+        <option value="economy">Economy</option>
+        <option value="business">Business</option>
+      </select>
+    </div>
   </div>
 
-  <div class="form-row">
-    <label>Number of Children:</label>
-    <select id="children">
-      <option value="0" selected>0</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-    </select>
-  </div>
-
-  <div class="form-row">
-    <label>Number of Infants:</label>
-    <select id="infants">
-      <option value="0" selected>0</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-    </select>
-  </div>
-</div>
-
- 
-
-  <!-- Box for Trip Type & Cabin Class -->
-<div class="input-group-box">
-  <div class="form-row">
-    <label>Trip Type:</label>
-    <select id="tripType">
-      <option value="oneway">Oneway</option>
-      <option value="roundtrip">Roundtrip</option>
-    </select>
-  </div>
-
-  <div class="form-row">
-    <label>Cabin Class:</label>
-    <select id="travelClass">
-      <option value="economy">Economy</option>
-      <option value="business">Business</option>
-    </select>
-  </div>
-</div>
-
-
+  <!-- Trip Purpose -->
   <fieldset>
     <legend>Trip Purpose:</legend>
     <label><input type="radio" name="ticketType" value="monthly"> Monthly Ticket</label>
@@ -302,40 +282,45 @@ body {
 
   <button id="calc">Calculate</button>
 
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <div class="loader-text">Calculating...</div>
+  </div>
+
+  <!-- Result & Copy Button -->
   <div style="position: relative; margin-top: 15px;">
-<pre id="result" style="margin: 0; padding-right: 24px; display:none;"></pre>
-  </pre>
-<button id="copyBtn" title="Copy to clipboard" style="
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    padding: 0;
-    margin: 0;
-    width: 32px;
-    height: 48px;
-    line-height: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-">
-  <img id="clipboardIcon" src="interface.png" alt="Copy" style="width:16px; height:16px;">
-  <img id="checkIcon" src="icons8-tick.gif" alt="Copied" style="width:16px; height:16px; display:none;">
-  <span id="copyMsg" style="color: green; font-size: 10px; margin-top: 2px; display:none;">Copied!</span>
-</button>
-
-
+    <pre id="result" style="margin: 0; padding-right: 24px; display:none;"></pre>
+    <button id="copyBtn" title="Copy to clipboard" style="
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+      margin: 0;
+      width: 32px;
+      height: 48px;
+      line-height: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    ">
+      <img id="clipboardIcon" src="interface.png" alt="Copy" style="width:16px; height:16px;">
+      <img id="checkIcon" src="icons8-tick.gif" alt="Copied" style="width:16px; height:16px; display:none;">
+      <span id="copyMsg" style="color: green; font-size: 10px; margin-top: 2px; display:none;">Copied!</span>
+    </button>
+  </div>
 </div>
 
-
-<!-- jQuery -->
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
