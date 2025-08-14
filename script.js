@@ -512,7 +512,7 @@ $(document).ready(function () {
         $("#infants").val("0");
         $("#tripType").val("oneway");
         $("#travelClass").val("economy");
-        $("input[name='ticketType']").prop("checked", false);
+        $("input[name='ticketType'][value='monthly']").prop("checked", true);
         $("#result").text("");
         $("#copyBtn").hide();
         lastCalculatedState = null;
