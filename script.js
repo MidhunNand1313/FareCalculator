@@ -215,10 +215,15 @@ $(document).ready(function () {
             return;
         }
 
-        // ALL validations passed - NOW show loader and proceed with calculation
+        // ALL validations passed - NOW show loader and scroll immediately
         $("#loader").show();
         $("#result").hide();
         $("#copyBtn").hide();
+        
+        // SCROLL IMMEDIATELY after showing the loader
+        $('html, body').animate({
+            scrollTop: $("#loader").offset().top - 20
+        }, 500);
         
         // Use setTimeout to simulate processing time and allow loader to show
         setTimeout(function() {
@@ -431,10 +436,6 @@ $(document).ready(function () {
     
     // Store current state as last calculated state
     lastCalculatedState = getCurrentFormState();
-    
-            $('html, body').animate({
-                scrollTop: $("#result").offset().top - 20 // 20px above the result
-            }, 500);
 
             // Show/hide copy button based on content
             if ($("#result").text().trim() !== "") {
