@@ -1,5 +1,212 @@
 $(document).ready(function () {
     let lastCalculatedState = null;
+    let calculationHistory = [];
+    const MAX_HISTORY = 4;
+
+    // Simulate persistent storage (in a real environment, you'd use localStorage)
+    function saveHistory() {
+        // In a real browser environment, you would use:
+        localStorage.setItem('fareCalculatorHistory', JSON.stringify(calculationHistory));
+        console.log('History saved:', calculationHistory);
+    }
+
+    function loadHistory() {
+        // In a real browser environment, you would use:
+        const saved = localStorage.getItem('fareCalculatorHistory');
+        if (saved) {
+            calculationHistory = JSON.parse(saved);
+        }
+        
+        // For demonstration, we'll start with empty history
+        // but in a real environment, this would load from localStorage
+        updateHistoryDisplay();
+    }
+
+    function addToHistory(inputs, result) {
+        const historyItem = {
+            timestamp: new Date().toLocaleString(),
+            inputs: { ...inputs },
+            result: { ...result }
+        };
+
+        // Add to beginning of array
+        calculationHistory.unshift(historyItem);
+
+        // Keep only the latest MAX_HISTORY items
+        if (calculationHistory.length > MAX_HISTORY) {
+            calculationHistory = calculationHistory.slice(0, MAX_HISTORY);
+        }
+
+        saveHistory();
+        updateHistoryDisplay();
+    }
+
+    function updateHistoryDisplay() {
+        const historyContainer = $('#historyContainer');
+        const historySection = $('#historySection');
+
+        if (calculationHistory.length === 0) {
+            historyContainer.html('<div class="no-history">No calculations yet</div>');
+            historySection.hide();
+            return;
+        }
+
+        historySection.show();
+        let historyHtml = '';
+
+        calculationHistory.forEach((item, index) => {
+            const inputs = item.inputs;
+            const result = item.result;
+            const totalPax = parseInt(inputs.adults) + parseInt(inputs.children) + parseInt(inputs.infants);
+            const ticketTypeDisplay = inputs.ticketType.replace('+', ' + ').replace(/\b\w/g, l => l.toUpperCase());
+            
+            historyHtml += `
+                <div class="history-item" data-index="${index}">
+                    <div class="history-item-header">
+                        <span class="history-item-title">#${index + 1} • ${totalPax} pax • ${ticketTypeDisplay}</span>
+                        <button class="history-copy-btn" data-index="${index}" title="Copy result">
+                 <img class="copy-icon" src="interface.png" alt="Copy" style="width:16px; height:16px; cursor:pointer;">
+                 <img class="check-icon" src="icons8-tick.gif" style="width:16px; height:16px; cursor:pointer;">
+                        </button>
+                    </div>
+                    <div class="history-details">
+                        <div>Adults: ${inputs.adults} (SAR ${inputs.fareAdult})</div>
+                        <div>Children: ${inputs.children} (SAR ${inputs.fareChild})</div>
+                        <div>Infants: ${inputs.infants} (SAR ${inputs.fareInfant})</div>
+                        <div>${inputs.tripType.charAt(0).toUpperCase() + inputs.tripType.slice(1)} | ${inputs.travelClass.charAt(0).toUpperCase() + inputs.travelClass.slice(1)}</div>
+                    </div>
+                    <div class="history-totals">
+                        <div class="history-totals-left">Corporate Card: SAR ${result.CCTotalCharges} • Personal Card: SAR ${result.PCTotalCharges}</div>
+                        <div class="history-timestamp">${item.timestamp}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        historyContainer.html(historyHtml);
+    }
+
+    // History copy button click handler
+    $(document).on('click', '.history-copy-btn', function(e) {
+        e.stopPropagation(); // Prevent triggering the history item click
+        
+        const index = $(this).data('index');
+        const historyItem = calculationHistory[index];
+        
+        if (historyItem) {
+            const result = historyItem.result;
+            
+            // Format the result as requested
+            let resultText = Object.entries(result)
+                .map(([key, value]) => `"${key}": ${value}`)
+                .join(",\n");
+            
+            const btn = $(this);
+            
+            navigator.clipboard.writeText(resultText).then(() => {
+                // Add 'copied' class to trigger CSS animation
+                btn.addClass('copied');
+                
+                // Remove 'copied' class after 1.5 seconds to restore original state
+                setTimeout(() => {
+                    btn.removeClass('copied');
+                }, 1500);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement("textarea");
+                textArea.value = resultText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    // Add 'copied' class to trigger CSS animation
+                    btn.addClass('copied');
+                    
+                    // Remove 'copied' class after 1.5 seconds
+                    setTimeout(() => {
+                        btn.removeClass('copied');
+                    }, 1500);
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                
+                document.body.removeChild(textArea);
+            });
+        }
+    });
+
+    // History item click handler (updated to avoid copy button area)
+    $(document).on('click', '.history-item', function(e) {
+        // Don't trigger if clicking the copy button
+        if ($(e.target).closest('.history-copy-btn').length) {
+            return;
+        }
+        
+        const index = $(this).data('index');
+        const historyItem = calculationHistory[index];
+        
+        if (historyItem) {
+            const inputs = historyItem.inputs;
+            
+            // Populate form with historical data
+            $('#fareAdult').val(inputs.fareAdult);
+            $('#fareChild').val(inputs.fareChild);
+            $('#fareInfant').val(inputs.fareInfant);
+            $('#adults').val(inputs.adults);
+            $('#children').val(inputs.children);
+            $('#infants').val(inputs.infants);
+            $('#tripType').val(inputs.tripType);
+            $('#travelClass').val(inputs.travelClass);
+            $(`input[name='ticketType'][value='${inputs.ticketType}']`).prop('checked', true);
+            
+            // Show the result
+            let resultText = Object.entries(historyItem.result)
+                .map(([key, value]) => `"${key}": ${value}`)
+                .join(",\n");
+            
+            $("#result").text(resultText).show();
+            $("#copyBtn").show();
+            
+            // Update last calculated state
+            lastCalculatedState = { ...inputs };
+            
+            // Scroll to result
+            $('html, body').animate({
+                scrollTop: $("#result").offset().top - 20
+            }, 500);
+        }
+    });
+
+    // Clear history button
+    $('#clearHistoryBtn').click(function() {
+        if (calculationHistory.length === 0) return;
+        
+        Swal.fire({
+            title: 'Clear History?',
+            text: 'This will permanently delete all calculation history.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ff4757',
+            cancelButtonColor: '#007BFF',
+            confirmButtonText: 'Yes, clear it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                calculationHistory = [];
+                saveHistory();
+                updateHistoryDisplay();
+                
+                Swal.fire({
+                    title: 'Cleared!',
+                    text: 'History has been cleared.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        });
+    });
 
     function getCurrentFormState() {
         return {
@@ -240,7 +447,6 @@ $(document).ready(function () {
                 PCInfantAmount: 0
             };
 
-
             // Helper function for rounding to 2 decimals
             function round2(n) {
                 return Math.round(n * 100) / 100;
@@ -426,16 +632,21 @@ $(document).ready(function () {
                 }
             }
 
-    let resultText = Object.entries(result)
-        .map(([key, value]) => `"${key}": ${value}`)
-        .join(",\n");
+            let resultText = Object.entries(result)
+                .map(([key, value]) => `"${key}": ${value}`)
+                .join(",\n");
 
-    // Hide loader and show result
-    $("#loader").hide();
-    $("#result").text(resultText).show();
-    
-    // Store current state as last calculated state
-    lastCalculatedState = getCurrentFormState();
+            // Hide loader and show result
+            $("#loader").hide();
+            $("#result").text(resultText).show();
+            
+            // Store current state as last calculated state
+            let currentInputs = getCurrentFormState();
+            lastCalculatedState = currentInputs;
+
+            // Add to history
+            addToHistory(currentInputs, result);
+
 
             // Show/hide copy button based on content
             if ($("#result").text().trim() !== "") {
@@ -518,4 +729,7 @@ $(document).ready(function () {
         $("#copyBtn").hide();
         lastCalculatedState = null;
     }
+
+    // Load history on page load
+    loadHistory();
 });
