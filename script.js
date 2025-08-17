@@ -41,50 +41,61 @@ $(document).ready(function () {
         updateHistoryDisplay();
     }
 
-    function updateHistoryDisplay() {
-        const historyContainer = $('#historyContainer');
-        const historySection = $('#historySection');
+   // Updated updateHistoryDisplay function with bold trip purpose and corrected naming
+function updateHistoryDisplay() {
+    const historyContainer = $('#historyContainer');
+    const historySection = $('#historySection');
 
-        if (calculationHistory.length === 0) {
-            historyContainer.html('<div class="no-history">No calculations yet</div>');
-            historySection.hide();
-            return;
-        }
-
-        historySection.show();
-        let historyHtml = '';
-
-        calculationHistory.forEach((item, index) => {
-            const inputs = item.inputs;
-            const result = item.result;
-            const totalPax = parseInt(inputs.adults) + parseInt(inputs.children) + parseInt(inputs.infants);
-            const ticketTypeDisplay = inputs.ticketType.replace('+', ' + ').replace(/\b\w/g, l => l.toUpperCase());
-            
-            historyHtml += `
-                <div class="history-item" data-index="${index}">
-                    <div class="history-item-header">
-                        <span class="history-item-title">#${index + 1} • ${totalPax} pax • ${ticketTypeDisplay}</span>
-                        <button class="history-copy-btn" data-index="${index}" title="Copy result">
-                 <img class="copy-icon" src="interface.png" alt="Copy" style="width:16px; height:16px; cursor:pointer;">
-                 <img class="check-icon" src="icons8-tick.gif" style="width:16px; height:16px; cursor:pointer;">
-                        </button>
-                    </div>
-                    <div class="history-details">
-                        <div>Adults: ${inputs.adults} (SAR ${inputs.fareAdult})</div>
-                        <div>Children: ${inputs.children} (SAR ${inputs.fareChild})</div>
-                        <div>Infants: ${inputs.infants} (SAR ${inputs.fareInfant})</div>
-                        <div>${inputs.tripType.charAt(0).toUpperCase() + inputs.tripType.slice(1)} | ${inputs.travelClass.charAt(0).toUpperCase() + inputs.travelClass.slice(1)}</div>
-                    </div>
-                    <div class="history-totals">
-                        <div class="history-totals-left">Corporate Card: SAR ${result.CCTotalCharges} • Personal Card: SAR ${result.PCTotalCharges}</div>
-                        <div class="history-timestamp">${item.timestamp}</div>
-                    </div>
-                </div>
-            `;
-        });
-
-        historyContainer.html(historyHtml);
+    if (calculationHistory.length === 0) {
+        historyContainer.html('<div class="no-history">No calculations yet</div>');
+        historySection.hide();
+        return;
     }
+
+    historySection.show();
+    let historyHtml = '';
+
+    calculationHistory.forEach((item, index) => {
+        const inputs = item.inputs;
+        const result = item.result;
+        const totalPax = parseInt(inputs.adults) + parseInt(inputs.children) + parseInt(inputs.infants);
+        
+        // Format ticket type with corrected naming and make it bold
+        let ticketTypeDisplay = inputs.ticketType;
+        if (ticketTypeDisplay === 'monthly+discounted') {
+            ticketTypeDisplay = 'monthly+discount';
+        }
+        ticketTypeDisplay = ticketTypeDisplay.replace('+', ' + ').replace(/\b\w/g, l => l.toUpperCase());
+        
+        // Format trip type and cabin class for the header
+        const tripTypeDisplay = inputs.tripType.charAt(0).toUpperCase() + inputs.tripType.slice(1);
+        const cabinClassDisplay = inputs.travelClass.charAt(0).toUpperCase() + inputs.travelClass.slice(1);
+        
+        historyHtml += `
+            <div class="history-item" data-index="${index}">
+                <div class="history-item-header">
+                    <span class="history-item-title">#${index + 1} • ${totalPax} pax • <strong>${ticketTypeDisplay}</strong> | ${tripTypeDisplay} | ${cabinClassDisplay}</span>
+                    <button class="history-copy-btn" data-index="${index}" title="Copy result">
+             <img class="copy-icon" src="interface.png" alt="Copy" style="width:16px; height:16px; cursor:pointer;">
+             <img class="check-icon" src="icons8-tick.gif" style="width:16px; height:16px; cursor:pointer;">
+                    </button>
+                </div>
+                <div class="history-details">
+                    <div>Adults: ${inputs.adults} (SAR ${inputs.fareAdult})</div>
+                    <div>Children: ${inputs.children} (SAR ${inputs.fareChild})</div>
+                    <div>Infants: ${inputs.infants} (SAR ${inputs.fareInfant})</div>
+                    <div></div>
+                </div>
+                <div class="history-totals">
+                    <div class="history-totals-left">Corporate Card: SAR ${result.CCTotalCharges} • Personal Card: SAR ${result.PCTotalCharges}</div>
+                    <div class="history-timestamp">${item.timestamp}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    historyContainer.html(historyHtml);
+}
 
     // History copy button click handler
     $(document).on('click', '.history-copy-btn', function(e) {
