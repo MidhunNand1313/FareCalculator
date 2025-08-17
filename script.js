@@ -191,33 +191,41 @@ function updateHistoryDisplay() {
 
     // Clear history button
     $('#clearHistoryBtn').click(function() {
-        if (calculationHistory.length === 0) return;
-        
-        Swal.fire({
-            title: 'Clear History?',
-            text: 'This will permanently delete all calculation history.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ff4757',
-            cancelButtonColor: '#007BFF',
-            confirmButtonText: 'Yes, clear it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                calculationHistory = [];
-                saveHistory();
-                updateHistoryDisplay();
-                
-                Swal.fire({
-                    title: 'Cleared!',
-                    text: 'History has been cleared.',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-            }
-        });
+    if (calculationHistory.length === 0) return;
+    
+    Swal.fire({
+        title: 'Clear History?',
+        text: 'This will permanently delete all calculation history.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ff4757',
+        cancelButtonColor: '#007BFF',
+        confirmButtonText: 'Yes, clear it!',
+        cancelButtonText: 'Cancel',
+        width: '340px',  // Added to match other alerts
+        customClass: {
+            popup: 'small-swal-popup'  // Added to match other alerts
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            calculationHistory = [];
+            saveHistory();
+            updateHistoryDisplay();
+            
+            Swal.fire({
+                title: 'Cleared!',
+                text: 'History has been cleared.',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false,
+                width: '340px',  // Added to match other alerts
+                customClass: {
+                    popup: 'small-swal-popup'  // Added to match other alerts
+                }
+            });
+        }
     });
+});
 
     function getCurrentFormState() {
         return {
