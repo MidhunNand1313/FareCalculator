@@ -247,6 +247,30 @@ function updateHistoryDisplay() {
         if ($(this).val().trim() === "") $(this).val("0");
     });
 
+    // Auto-update child dropdown when child fare is entered
+    $("#fareChild").on('input blur', function() {
+        let fareValue = parseFloat($(this).val()) || 0;
+        let currentChildren = parseInt($("#children").val()) || 0;
+        
+        if (fareValue > 0 && currentChildren === 0) {
+            $("#children").val("1");
+        } else if (fareValue === 0 && currentChildren > 0) {
+            $("#children").val("0");
+        }
+    });
+
+    // Auto-update infant dropdown when infant fare is entered
+    $("#fareInfant").on('input blur', function() {
+        let fareValue = parseFloat($(this).val()) || 0;
+        let currentInfants = parseInt($("#infants").val()) || 0;
+        
+        if (fareValue > 0 && currentInfants === 0) {
+            $("#infants").val("1");
+        } else if (fareValue === 0 && currentInfants > 0) {
+            $("#infants").val("0");
+        }
+    });
+
     $("#calc").click(function () {
         // Get all values first for validation
         let fareAdult = parseFloat($("#fareAdult").val()) || 0;
