@@ -413,6 +413,18 @@ function updateHistoryDisplay() {
             });
             return;
         }
+        if(ticketType == "monthly" && travelClass == "economy"){
+             Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Payment method is not needed for monthly economy.',
+                width: '340px',
+                customClass: {
+                popup: 'small-swal-popup'
+                }
+            });
+            return;
+        }
 
         if (ticketType === "monthly+discounted" && totalPax < 2) {
             Swal.fire({
