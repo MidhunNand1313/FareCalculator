@@ -3,6 +3,10 @@ $(document).ready(function () {
     let calculationHistory = [];
     const MAX_HISTORY = 4;
 
+      $('input[type=number]').on('wheel', function(e) {
+      e.preventDefault();
+    });
+
     // Simulate persistent storage (in a real environment, you'd use localStorage)
     function saveHistory() {
         // In a real browser environment, you would use:
