@@ -513,6 +513,13 @@ pre {
     <label><input type="radio" name="ticketType" value="monthly+discounted"> Monthly + Discount Ticket</label>
   </fieldset>
 
+  <!-- Payment Method -->
+  <fieldset>
+    <legend>Payment Method:</legend>
+    <label><input type="radio" name="paymentMethod" value="airline" checked> Airline Payment</label>
+    <label><input type="radio" name="paymentMethod" value="other"> Other Payment</label>
+  </fieldset>
+
   <button id="calc">Calculate</button>
 
   <!-- Loader -->
@@ -568,6 +575,7 @@ pre {
     </div>
   </div>
 </div>
+
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

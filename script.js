@@ -15,14 +15,10 @@ $(document).ready(function () {
     }
 
     function loadHistory() {
-        // In a real browser environment, you would use:
         const saved = localStorage.getItem('fareCalculatorHistory');
         if (saved) {
             calculationHistory = JSON.parse(saved);
         }
-        
-        // For demonstration, we'll start with empty history
-        // but in a real environment, this would load from localStorage
         updateHistoryDisplay();
     }
 
@@ -74,11 +70,12 @@ function updateHistoryDisplay() {
         // Format trip type and cabin class for the header
         const tripTypeDisplay = inputs.tripType.charAt(0).toUpperCase() + inputs.tripType.slice(1);
         const cabinClassDisplay = inputs.travelClass.charAt(0).toUpperCase() + inputs.travelClass.slice(1);
+        const paymentMethodDisplay = inputs.paymentMethod.charAt(0).toUpperCase() + inputs.paymentMethod.slice(1);
         
         historyHtml += `
             <div class="history-item" data-index="${index}">
                 <div class="history-item-header">
-                    <span class="history-item-title">#${index + 1} • ${totalPax} pax • <strong>${ticketTypeDisplay}</strong> | ${tripTypeDisplay} | ${cabinClassDisplay}</span>
+                    <span class="history-item-title">#${index + 1} • ${totalPax} pax • <strong>${ticketTypeDisplay}</strong> | ${tripTypeDisplay} | ${cabinClassDisplay} | ${paymentMethodDisplay}</span>
                     <button class="history-copy-btn" data-index="${index}" title="Copy result">
              <img class="copy-icon" src="interface.png" alt="Copy" style="width:16px; height:16px; cursor:pointer;">
              <img class="check-icon" src="icons8-tick.gif" style="width:16px; height:16px; cursor:pointer;">
@@ -174,6 +171,7 @@ function updateHistoryDisplay() {
             $('#tripType').val(inputs.tripType);
             $('#travelClass').val(inputs.travelClass);
             $(`input[name='ticketType'][value='${inputs.ticketType}']`).prop('checked', true);
+            $(`input[name='paymentMethod'][value='${inputs.paymentMethod}']`).prop('checked', true);
             
             // Show the result
             let resultText = Object.entries(historyItem.result)
@@ -241,7 +239,8 @@ function updateHistoryDisplay() {
             infants: $("#infants").val(),
             tripType: $("#tripType").val(),
             travelClass: $("#travelClass").val(),
-            ticketType: $("input[name='ticketType']:checked").val()
+            ticketType: $("input[name='ticketType']:checked").val(),
+            paymentMethod: $("input[name='paymentMethod']:checked").val()
         };
     }
 
@@ -296,6 +295,7 @@ function updateHistoryDisplay() {
         let tripType = $("#tripType").val().toLowerCase();
         let travelClass = $("#travelClass").val().toLowerCase();
         let ticketType = $("input[name='ticketType']:checked").val();
+        let paymentMethod = $("input[name='paymentMethod']:checked").val();
 
         let totalPax = adults + children + infants;
 
@@ -417,6 +417,20 @@ function updateHistoryDisplay() {
             });
             return;
         }
+        
+        if (!paymentMethod) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please select a payment method before calculating.',
+                width: '340px',
+                customClass: {
+                popup: 'small-swal-popup'
+                }
+            });
+            return;
+        }
+        
         if(ticketType == "monthly" && travelClass == "economy"){
              Swal.fire({
                 icon: 'error',
@@ -506,9 +520,21 @@ function updateHistoryDisplay() {
                 PCInfantAmount: 0
             };
 
+            // Add surcharge fields for other payment method
+            if (paymentMethod === "other") {
+                result.PCAdultSurCharges = 0;
+                result.PCChildSurCharges = 0;
+                result.PCInfantSurCharges = 0;
+            }
+
             // Helper function for rounding to 2 decimals
             function round2(n) {
                 return Math.round(n * 100) / 100;
+            }
+
+            // Helper function to calculate surcharge
+            function calculateSurcharge(amount) {
+                return round2(amount * 2.5 / 100);
             }
 
             // Monthly ticket logic
@@ -530,6 +556,10 @@ function updateHistoryDisplay() {
                 result.CCAdultAmount = round2(totalFare - actualDeduction);
                 result.PCAdultAmount = round2(actualDeduction);
 
+                // Add surcharges for other payment method
+                if (paymentMethod === "other") {
+                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount);
+                }
             }
             // Discounted ticket logic
             else if (ticketType === "discounted") {
@@ -566,6 +596,13 @@ function updateHistoryDisplay() {
                 const infantSplit = splitFare(fareInfant, infants);
                 result.PCInfantAmount = round2(infantSplit.pc);
                 result.CCInfantAmount = round2(infantSplit.cc);
+
+                // Add surcharges for other payment method
+                if (paymentMethod === "other") {
+                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount);
+                    result.PCChildSurCharges = calculateSurcharge(result.PCChildAmount);
+                    result.PCInfantSurCharges = calculateSurcharge(result.PCInfantAmount);
+                }
 
                 // Totals
                 result.PCTotalCharges = round2(
@@ -626,42 +663,41 @@ function updateHistoryDisplay() {
                 let PCInfantAmount = 0, CCInfantAmount = 0;
                 let PCTotalCharges = 0, CCTotalCharges = 0;
 
-    passengers.forEach((pax, index) => {
-        let fare = pax.fare || 0;
-        let pcDeduction = 0;
-        let pcAmount = 0;
-        let ccAmount = 0;
+                passengers.forEach((pax, index) => {
+                    let fare = pax.fare || 0;
+                    let pcDeduction = 0;
+                    let pcAmount = 0;
+                    let ccAmount = 0;
 
-        if (index === 0) {
-            // Lead passenger - monthly logic
-            pcDeduction = personalDeductionMonthly;
-            pcAmount = Math.min(pcDeduction, fare);
-        } else {
-            // Other passengers - discounted logic
-            pcDeduction = personalDeductionDiscounted;
-            pcAmount = Math.min(pcDeduction, fare);
-        }
+                    if (index === 0) {
+                        // Lead passenger - monthly logic
+                        pcDeduction = personalDeductionMonthly;
+                        pcAmount = Math.min(pcDeduction, fare);
+                    } else {
+                        // Other passengers - discounted logic
+                        pcDeduction = personalDeductionDiscounted;
+                        pcAmount = Math.min(pcDeduction, fare);
+                    }
 
-        ccAmount = Math.max(fare - pcAmount, 0);
+                    ccAmount = Math.max(fare - pcAmount, 0);
 
-        PCTotalCharges += pcAmount;
-        CCTotalCharges += ccAmount;
+                    PCTotalCharges += pcAmount;
+                    CCTotalCharges += ccAmount;
 
-        if (index !== 0) { // discounted passengers only for category per-pax amount
-            if (pax.type === "Adult") {
-                // overwrite per pax amount with current passenger's split
-                PCAdultAmount = pcAmount;
-                CCAdultAmount = ccAmount;
-            } else if (pax.type === "Child") {
-                PCChildAmount = pcAmount;
-                CCChildAmount = ccAmount;
-            } else if (pax.type === "Infant") {
-                PCInfantAmount = pcAmount;
-                CCInfantAmount = ccAmount;
-            }
-        }
-    });
-
+                    if (index !== 0) { // discounted passengers only for category per-pax amount
+                        if (pax.type === "Adult") {
+                            // overwrite per pax amount with current passenger's split
+                            PCAdultAmount = pcAmount;
+                            CCAdultAmount = ccAmount;
+                        } else if (pax.type === "Child") {
+                            PCChildAmount = pcAmount;
+                            CCChildAmount = ccAmount;
+                        } else if (pax.type === "Infant") {
+                            PCInfantAmount = pcAmount;
+                            CCInfantAmount = ccAmount;
+                        }
+                    }
+                });
 
                 // Round all amounts
                 PCAdultAmount = round2(PCAdultAmount);
@@ -681,9 +717,15 @@ function updateHistoryDisplay() {
                 result.CCInfantAmount = CCInfantAmount;
                 result.PCTotalCharges = PCTotalCharges;
                 result.CCTotalCharges = CCTotalCharges;
+
+                // Add surcharges for other payment method
+                if (paymentMethod === "other") {
+                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount);
+                    result.PCChildSurCharges = calculateSurcharge(result.PCChildAmount);
+                    result.PCInfantSurCharges = calculateSurcharge(result.PCInfantAmount);
+                }
             }
 
-            
             // Final safeguard rounding (optional)
             for (let key in result) {
                 if (typeof result[key] === "number") {
@@ -705,7 +747,6 @@ function updateHistoryDisplay() {
 
             // Add to history
             addToHistory(currentInputs, result);
-
 
             // Show/hide copy button based on content
             if ($("#result").text().trim() !== "") {
@@ -784,6 +825,7 @@ function updateHistoryDisplay() {
         $("#tripType").val("oneway");
         $("#travelClass").val("economy");
         $("input[name='ticketType'][value='monthly']").prop("checked", true);
+        $("input[name='paymentMethod'][value='airline']").prop("checked", true);
         $("#result").text("");
         $("#copyBtn").hide();
         lastCalculatedState = null;
