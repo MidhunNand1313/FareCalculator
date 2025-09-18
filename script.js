@@ -7,19 +7,19 @@ $(document).ready(function () {
       e.preventDefault();
     });
 	
-	// Helper function for rounding to 2 decimals
-    function round2(n) {
-        return Math.round(n * 100) / 100;
-    }
+	// // Helper function for rounding to 2 decimals
+    // function round2(n) {
+    //     return Math.round(n * 100) / 100;
+    // }
 
-    // Helper function to calculate sandbox amount with corrected formula
-    function calculateSandboxAmount(pcTotalCharges) {
-        const surcharge = pcTotalCharges * 2.5 / 100;
-        const percentageOfSurcharge = surcharge * 0.15;
-        const totalAmount = pcTotalCharges + surcharge + percentageOfSurcharge;
-        const sandboxAmount = totalAmount * 100;
-        return round2(sandboxAmount);
-    }
+   function calculateSandboxAmount(pcTotalCharges) {
+    const surcharge = pcTotalCharges * 2.5 / 100;
+    const percentageOfSurcharge = surcharge * 0.15;
+    const totalAmount = pcTotalCharges + surcharge + percentageOfSurcharge;
+
+    // Convert to integer minor unit (e.g., cents)
+    return Math.round(totalAmount * 100);
+}
 
 
     // Simulate persistent storage (in a real environment, you'd use localStorage)
