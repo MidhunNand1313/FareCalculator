@@ -6,6 +6,21 @@ $(document).ready(function () {
       $('input[type=number]').on('wheel', function(e) {
       e.preventDefault();
     });
+	
+	// Helper function for rounding to 2 decimals
+    function round2(n) {
+        return Math.round(n * 100) / 100;
+    }
+
+    // Helper function to calculate sandbox amount with corrected formula
+    function calculateSandboxAmount(pcTotalCharges) {
+        const surcharge = pcTotalCharges * 2.5 / 100;
+        const percentageOfSurcharge = surcharge * 0.15;
+        const totalAmount = pcTotalCharges + surcharge + percentageOfSurcharge;
+        const sandboxAmount = totalAmount * 100;
+        return round2(sandboxAmount);
+    }
+
 
     // Simulate persistent storage (in a real environment, you'd use localStorage)
     function saveHistory() {
@@ -180,6 +195,14 @@ function updateHistoryDisplay() {
             
             $("#result").text(resultText).show();
             $("#copyBtn").show();
+			
+			  // Show sandbox amount only for "other" payment method
+            if (inputs.paymentMethod === 'other') {
+                const sandboxAmount = calculateSandboxAmount(historyItem.result.PCTotalCharges);
+                $("#sandboxAmount").text(`Sandbox Amount: ${sandboxAmount}`).show();
+            } else {
+                $("#sandboxAmount").hide();
+            }         
             
             // Update last calculated state
             lastCalculatedState = { ...inputs };
@@ -499,6 +522,8 @@ function updateHistoryDisplay() {
         $("#loader").show();
         $("#result").hide();
         $("#copyBtn").hide();
+	    $("#sandboxAmount").hide();
+
         
         // SCROLL IMMEDIATELY after showing the loader
         $('html, body').animate({
@@ -740,6 +765,15 @@ function updateHistoryDisplay() {
             // Hide loader and show result
             $("#loader").hide();
             $("#result").text(resultText).show();
+			
+                // Show sandbox amount only for "other" payment method
+            if (paymentMethod === 'other') {
+                const sandboxAmount = calculateSandboxAmount(result.PCTotalCharges);
+                $("#sandboxAmount").html(`<strong>Sandbox Amount:</strong> ${sandboxAmount}`).show();
+            } else {
+                $("#sandboxAmount").hide();
+            }
+
             
             // Store current state as last calculated state
             let currentInputs = getCurrentFormState();
@@ -813,7 +847,7 @@ function updateHistoryDisplay() {
     });
 
     $("#result").hide();
-    resetFormFields();
+	 $("#sandboxAmount").hide();
 
     function resetFormFields() {
         $("#fareAdult").val("0");
@@ -827,10 +861,11 @@ function updateHistoryDisplay() {
         $("input[name='ticketType'][value='monthly']").prop("checked", true);
         $("input[name='paymentMethod'][value='airline']").prop("checked", true);
         $("#result").text("");
+        $("#sandboxAmount").text("").hide();
         $("#copyBtn").hide();
         lastCalculatedState = null;
     }
-
+    resetFormFields();
     // Load history on page load
     loadHistory();
 });

@@ -238,6 +238,18 @@ pre {
   font-weight: bold;
 }
 
+.sandbox-amount {
+  background: #fff8e7;
+  border: 1px solid #f0c674;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #8b6914;
+  font-weight: 500;
+  display: none;
+}
+
 /* History Styles */
 .history-section {
   margin-top: 25px;
@@ -531,6 +543,7 @@ pre {
   <!-- Result & Copy Button -->
   <div class="result-container">
     <pre id="result" style="margin: 0; padding-right: 24px; display:none;"></pre>
+	    <div class="sandbox-amount" id="sandboxAmount"></div>
     <button id="copyBtn" title="Copy to clipboard" style="
       position: absolute;
       top: 6px;
