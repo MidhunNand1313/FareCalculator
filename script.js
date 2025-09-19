@@ -12,14 +12,26 @@ $(document).ready(function () {
     //     return Math.round(n * 100) / 100;
     // }
 
-   function calculateSandboxAmount(pcTotalCharges) {
-    const surcharge = pcTotalCharges * 2.5 / 100;
-    const percentageOfSurcharge = surcharge * 0.15;
-    const totalAmount = pcTotalCharges + surcharge + percentageOfSurcharge;
+   // Updated calculateSandboxAmount function to handle surcharges correctly
+   function calculateSandboxAmount(pcTotalCharges, result = null) {
+       let totalSurcharge = 0;
+       
+       // If result object is provided and contains surcharge fields, use them
+       if (result && (result.PCAdultSurCharges || result.PCChildSurCharges || result.PCInfantSurCharges)) {
+           totalSurcharge = (result.PCAdultSurCharges || 0) + 
+                           (result.PCChildSurCharges || 0) + 
+                           (result.PCInfantSurCharges || 0);
+       } else {
+           // Fallback to calculating surcharge from total charges
+           totalSurcharge = pcTotalCharges * 2.5 / 100;
+       }
+       
+       const percentageOfSurcharge = totalSurcharge * 0.15;
+       const totalAmount = pcTotalCharges + totalSurcharge + percentageOfSurcharge;
 
-    // Convert to integer minor unit (e.g., cents)
-    return Math.round(totalAmount * 100);
-}
+       // Convert to integer minor unit (e.g., cents)
+       return Math.round(totalAmount * 100);
+   }
 
 
     // Simulate persistent storage (in a real environment, you'd use localStorage)
@@ -197,9 +209,9 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
             $("#result").text(resultText).show();
             $("#copyBtn").show();
 			
-			  // Show sandbox amount only for "other" payment method
+			  // Show sandbox amount only for "other" payment method - FIXED
             if (inputs.paymentMethod === 'other') {
-                const sandboxAmount = calculateSandboxAmount(historyItem.result.PCTotalCharges);
+                const sandboxAmount = calculateSandboxAmount(historyItem.result.PCTotalCharges, historyItem.result);
                 $("#sandboxAmount").text(`Sandbox Amount: ${sandboxAmount}`).show();
             } else {
                 $("#sandboxAmount").hide();
@@ -767,9 +779,9 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
             $("#loader").hide();
             $("#result").text(resultText).show();
 			
-                // Show sandbox amount only for "other" payment method
+                // Show sandbox amount only for "other" payment method - FIXED
             if (paymentMethod === 'other') {
-                const sandboxAmount = calculateSandboxAmount(result.PCTotalCharges);
+                const sandboxAmount = calculateSandboxAmount(result.PCTotalCharges, result);
                 $("#sandboxAmount").html(`<strong>Sandbox Amount:</strong> ${sandboxAmount}`).show();
             } else {
                 $("#sandboxAmount").hide();
