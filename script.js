@@ -583,7 +583,7 @@ function updateHistoryDisplay() {
 
                 // Add surcharges for other payment method
                 if (paymentMethod === "other") {
-                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount);
+                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount * adults);
                 }
             }
             // Discounted ticket logic
@@ -624,9 +624,9 @@ function updateHistoryDisplay() {
 
                 // Add surcharges for other payment method
                 if (paymentMethod === "other") {
-                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount);
-                    result.PCChildSurCharges = calculateSurcharge(result.PCChildAmount);
-                    result.PCInfantSurCharges = calculateSurcharge(result.PCInfantAmount);
+                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount * adults);
+                    result.PCChildSurCharges = calculateSurcharge(result.PCChildAmount * children);
+                    result.PCInfantSurCharges = calculateSurcharge(result.PCInfantAmount * infants);
                 }
 
                 // Totals
@@ -745,9 +745,9 @@ function updateHistoryDisplay() {
 
                 // Add surcharges for other payment method
                 if (paymentMethod === "other") {
-                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount);
-                    result.PCChildSurCharges = calculateSurcharge(result.PCChildAmount);
-                    result.PCInfantSurCharges = calculateSurcharge(result.PCInfantAmount);
+                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount * adults);
+                    result.PCChildSurCharges = calculateSurcharge(result.PCChildAmount * children);
+                    result.PCInfantSurCharges = calculateSurcharge(result.PCInfantAmount * infants);
                 }
             }
 
