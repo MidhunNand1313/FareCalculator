@@ -85,8 +85,9 @@ function updateHistoryDisplay() {
         // Format trip type and cabin class for the header
         const tripTypeDisplay = inputs.tripType.charAt(0).toUpperCase() + inputs.tripType.slice(1);
         const cabinClassDisplay = inputs.travelClass.charAt(0).toUpperCase() + inputs.travelClass.slice(1);
-        const paymentMethodDisplay = inputs.paymentMethod.charAt(0).toUpperCase() + inputs.paymentMethod.slice(1);
-        
+const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' : 
+            inputs.paymentMethod.charAt(0).toUpperCase() + inputs.paymentMethod.slice(1); 
+                   
         historyHtml += `
             <div class="history-item" data-index="${index}">
                 <div class="history-item-header">
