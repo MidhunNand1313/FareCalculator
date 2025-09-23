@@ -595,9 +595,9 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
                 result.PCAdultAmount = round2(actualDeduction);
 
                 // Add surcharges for other payment method
-                if (paymentMethod === "other") {
-                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount * adults);
-                }
+              if (paymentMethod === "other") {
+    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount);
+}
             }
             // Discounted ticket logic
             else if (ticketType === "discounted") {
@@ -636,11 +636,11 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
                 result.CCInfantAmount = round2(infantSplit.cc);
 
                 // Add surcharges for other payment method
-                if (paymentMethod === "other") {
-                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount * adults);
-                    result.PCChildSurCharges = calculateSurcharge(result.PCChildAmount * children);
-                    result.PCInfantSurCharges = calculateSurcharge(result.PCInfantAmount * infants);
-                }
+               if (paymentMethod === "other") {
+    result.PCAdultSurCharges = adults > 0 ? calculateSurcharge(result.PCAdultAmount) : 0;
+    result.PCChildSurCharges = children > 0 ? calculateSurcharge(result.PCChildAmount) : 0;
+    result.PCInfantSurCharges = infants > 0 ? calculateSurcharge(result.PCInfantAmount) : 0;
+}
 
                 // Totals
                 result.PCTotalCharges = round2(
@@ -757,11 +757,11 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
                 result.CCTotalCharges = CCTotalCharges;
 
                 // Add surcharges for other payment method
-                if (paymentMethod === "other") {
-                    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount * adults);
-                    result.PCChildSurCharges = calculateSurcharge(result.PCChildAmount * children);
-                    result.PCInfantSurCharges = calculateSurcharge(result.PCInfantAmount * infants);
-                }
+              if (paymentMethod === "other") {
+    result.PCAdultSurCharges = adults > 0 ? calculateSurcharge(result.PCAdultAmount) : 0;
+    result.PCChildSurCharges = children > 0 ? calculateSurcharge(result.PCChildAmount) : 0;
+    result.PCInfantSurCharges = infants > 0 ? calculateSurcharge(result.PCInfantAmount) : 0;
+}
             }
 
             // Final safeguard rounding (optional)
