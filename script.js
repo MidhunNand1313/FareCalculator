@@ -13,26 +13,30 @@ $(document).ready(function () {
     // }
 
    // Updated calculateSandboxAmount function to handle surcharges correctly
-   function calculateSandboxAmount(pcTotalCharges, result = null) {
-       let totalSurcharge = 0;
-       
-       // If result object is provided and contains surcharge fields, use them
-       if (result && (result.PCAdultSurCharges || result.PCChildSurCharges || result.PCInfantSurCharges)) {
-           totalSurcharge = (result.PCAdultSurCharges || 0) + 
-                           (result.PCChildSurCharges || 0) + 
-                           (result.PCInfantSurCharges || 0);
-       } else {
-           // Fallback to calculating surcharge from total charges
-           totalSurcharge = pcTotalCharges * 2.5 / 100;
-       }
-       
-       const percentageOfSurcharge = totalSurcharge * 0.15;
-       const totalAmount = pcTotalCharges + totalSurcharge + percentageOfSurcharge;
+   function calculateSandboxAmount(pcTotalCharges, result = null, passengerCounts = null) {
+    let totalSurcharge = 0;
+    
+    // If result object is provided and contains surcharge fields, use them with passenger counts
+    if (result && (result.PCAdultSurCharges || result.PCChildSurCharges || result.PCInfantSurCharges)) {
+        // Get passenger counts from the current form or passed parameter
+        let adults = passengerCounts ? passengerCounts.adults : (parseInt($("#adults").val()) || 0);
+        let children = passengerCounts ? passengerCounts.children : (parseInt($("#children").val()) || 0);
+        let infants = passengerCounts ? passengerCounts.infants : (parseInt($("#infants").val()) || 0);
+        
+        totalSurcharge = ((result.PCAdultSurCharges || 0) * adults) + 
+                        ((result.PCChildSurCharges || 0) * children) + 
+                        ((result.PCInfantSurCharges || 0) * infants);
+    } else {
+        // Fallback to calculating surcharge from total charges
+        totalSurcharge = pcTotalCharges * 2.5 / 100;
+    }
+    
+    const percentageOfSurcharge = totalSurcharge * 0.15;
+    const totalAmount = pcTotalCharges + totalSurcharge + percentageOfSurcharge;
 
-       // Convert to integer minor unit (e.g., cents)
-       return Math.round(totalAmount * 100);
-   }
-
+    // Convert to integer minor unit (e.g., cents)
+    return Math.round(totalAmount * 100);
+}
 
     // Simulate persistent storage (in a real environment, you'd use localStorage)
     function saveHistory() {
@@ -210,12 +214,13 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
             $("#copyBtn").show();
 			
 			  // Show sandbox amount only for "other" payment method - FIXED
-            if (inputs.paymentMethod === 'other') {
-                const sandboxAmount = calculateSandboxAmount(historyItem.result.PCTotalCharges, historyItem.result);
-                $("#sandboxAmount").text(`Sandbox Amount: ${sandboxAmount}`).show();
-            } else {
-                $("#sandboxAmount").hide();
-            }         
+            if (paymentMethod === 'other') {
+            const passengerCounts = { adults, children, infants };
+            const sandboxAmount = calculateSandboxAmount(result.PCTotalCharges, result, passengerCounts);
+            $("#sandboxAmount").html(`<strong>Sandbox Amount:</strong> ${sandboxAmount}`).show();
+        } else {
+            $("#sandboxAmount").hide();
+        }     
             
             // Update last calculated state
             lastCalculatedState = { ...inputs };
@@ -596,8 +601,8 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
 
                 // Add surcharges for other payment method
               if (paymentMethod === "other") {
-    result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount);
-}
+                result.PCAdultSurCharges = calculateSurcharge(result.PCAdultAmount);
+            }
             }
             // Discounted ticket logic
             else if (ticketType === "discounted") {
@@ -637,10 +642,10 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
 
                 // Add surcharges for other payment method
                if (paymentMethod === "other") {
-    result.PCAdultSurCharges = adults > 0 ? calculateSurcharge(result.PCAdultAmount) : 0;
-    result.PCChildSurCharges = children > 0 ? calculateSurcharge(result.PCChildAmount) : 0;
-    result.PCInfantSurCharges = infants > 0 ? calculateSurcharge(result.PCInfantAmount) : 0;
-}
+                result.PCAdultSurCharges = adults > 0 ? calculateSurcharge(result.PCAdultAmount) : 0;
+                result.PCChildSurCharges = children > 0 ? calculateSurcharge(result.PCChildAmount) : 0;
+                result.PCInfantSurCharges = infants > 0 ? calculateSurcharge(result.PCInfantAmount) : 0;
+        }
 
                 // Totals
                 result.PCTotalCharges = round2(
@@ -758,10 +763,10 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
 
                 // Add surcharges for other payment method
               if (paymentMethod === "other") {
-    result.PCAdultSurCharges = adults > 0 ? calculateSurcharge(result.PCAdultAmount) : 0;
-    result.PCChildSurCharges = children > 0 ? calculateSurcharge(result.PCChildAmount) : 0;
-    result.PCInfantSurCharges = infants > 0 ? calculateSurcharge(result.PCInfantAmount) : 0;
-}
+                result.PCAdultSurCharges = adults > 0 ? calculateSurcharge(result.PCAdultAmount) : 0;
+                result.PCChildSurCharges = children > 0 ? calculateSurcharge(result.PCChildAmount) : 0;
+                result.PCInfantSurCharges = infants > 0 ? calculateSurcharge(result.PCInfantAmount) : 0;
+            }
             }
 
             // Final safeguard rounding (optional)
