@@ -41,15 +41,15 @@ $(document).ready(function () {
     // Simulate persistent storage (in a real environment, you'd use localStorage)
     function saveHistory() {
         // In a real browser environment, you would use:
-        localStorage.setItem('fareCalculatorHistory', JSON.stringify(calculationHistory));
+        // localStorage.setItem('fareCalculatorHistory', JSON.stringify(calculationHistory));
         console.log('History saved:', calculationHistory);
     }
 
     function loadHistory() {
-        const saved = localStorage.getItem('fareCalculatorHistory');
-        if (saved) {
-            calculationHistory = JSON.parse(saved);
-        }
+        // const saved = localStorage.getItem('fareCalculatorHistory');
+        // if (saved) {
+        //     calculationHistory = JSON.parse(saved);
+        // }
         updateHistoryDisplay();
     }
 
@@ -214,9 +214,12 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
             $("#copyBtn").show();
 			
 			  // Show sandbox amount only for "other" payment method - FIXED
-            if (paymentMethod === 'other') {
+            if (inputs.paymentMethod === 'other') {
+            const adults = parseInt(inputs.adults) || 0;
+            const children = parseInt(inputs.children) || 0;
+            const infants = parseInt(inputs.infants) || 0;
             const passengerCounts = { adults, children, infants };
-            const sandboxAmount = calculateSandboxAmount(result.PCTotalCharges, result, passengerCounts);
+            const sandboxAmount = calculateSandboxAmount(historyItem.result.PCTotalCharges, historyItem.result, passengerCounts);
             $("#sandboxAmount").html(`<strong>Sandbox Amount:</strong> ${sandboxAmount}`).show();
         } else {
             $("#sandboxAmount").hide();
@@ -809,26 +812,32 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
         }, 500); // 500ms delay to show loader
     });
 
-    // Updated copy button click handler with popup and original icon behavior
+    // Updated copy button click handler with popup and dynamic positioning
     $("#copyBtn").click(function () {
         let text = $("#result").text().trim();
         if (!text) return;
 
         let btn = $(this);
         navigator.clipboard.writeText(text).then(() => {
-            // Show the popup
+            // Show the popup with dynamic positioning
             const popup = $("#copyPopup");
+            const resultContainer = $(".result-container");
+            const containerHeight = resultContainer.outerHeight();
+            
+            // Position popup based on container height
+            if (containerHeight > 200) {
+                // For taller containers (with sandbox amount), position lower
+                popup.css('bottom', Math.min(containerHeight - 50, 60) + 'px');
+            } else {
+                // For shorter containers, use lower position
+                popup.css('bottom', '25px');
+            }
+            
             popup.addClass("show");
             
-            // Change to check icon (your original behavior)
-            $("#clipboardIcon").hide();
-            $("#checkIcon").show();
-            
-            // Hide the popup and restore icon after 1.75 seconds
+            // Hide the popup after 1.75 seconds
             setTimeout(() => {
                 popup.removeClass("show");
-                $("#checkIcon").hide();
-                $("#clipboardIcon").show();
             }, 1750);
         }).catch(() => {
             // Fallback for older browsers
@@ -842,19 +851,22 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
             
             try {
                 document.execCommand('copy');
-                // Show the popup
+                // Dynamic positioning for fallback too
                 const popup = $("#copyPopup");
+                const resultContainer = $(".result-container");
+                const containerHeight = resultContainer.outerHeight();
+                
+                if (containerHeight > 200) {
+                    popup.css('bottom', Math.min(containerHeight - 50, 80) + 'px');
+                } else {
+                    popup.css('bottom', '25px');
+                }
+                
                 popup.addClass("show");
                 
-                // Change to check icon
-                $("#clipboardIcon").hide();
-                $("#checkIcon").show();
-                
-                // Hide the popup and restore icon after 1.75 seconds
+                // Hide the popup after 1.75 seconds
                 setTimeout(() => {
                     popup.removeClass("show");
-                    $("#checkIcon").hide();
-                    $("#clipboardIcon").show();
                 }, 1750);
             } catch (err) {
                 console.error('Failed to copy text: ', err);

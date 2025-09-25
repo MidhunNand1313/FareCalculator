@@ -180,7 +180,7 @@ pre {
   font-size: 14px;
 }
 
-/* Copy Popup Styles */
+/* Copy Popup Styles - FIXED */
 .result-container {
   position: relative;
   margin-top: 15px;
@@ -188,9 +188,8 @@ pre {
 
 .copy-popup {
   position: absolute;
-  top: 80%;
-  right: 12px;
-  transform: translateY(-50%) translateX(100%);
+  bottom: 25px;
+  right: 10px;
   background: white;
   color: #333;
   padding: 12px 16px 12px 8px;
@@ -205,11 +204,17 @@ pre {
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   display: flex;
   align-items: center;
+  pointer-events: none;
+  transform: translateX(100%);
 }
 
 .copy-popup.show {
   opacity: 1;
-  transform: translateY(-50%) translateX(-10px);
+  transform: translateX(0);
+}
+
+.copy-popup.gateway-position {
+  bottom: 60px;
 }
 
 .copy-popup::before {
@@ -588,6 +593,7 @@ pre {
     </div>
   </div>
 </div>
+
 
 
 <!-- Scripts -->
