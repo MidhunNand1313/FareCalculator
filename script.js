@@ -115,7 +115,7 @@ function updateHistoryDisplay() {
             const sandboxAmount = calculateSandboxAmount(result.PCTotalCharges, result, passengerCounts);
             sandboxAmountSection = `
                 <div class="history-sandbox">
-                    <span style="color: #ff6b35; font-weight: 500; font-size: 10px;">Sandbox Amount: ${sandboxAmount}</span>
+                    <span style="color: #ff6b35; font-weight: 500; font-size: 11px;">Sandbox Amount: ${sandboxAmount}</span>
                 </div>`;
         }
                    
