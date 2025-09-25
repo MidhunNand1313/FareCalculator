@@ -41,15 +41,15 @@ $(document).ready(function () {
     // Simulate persistent storage (in a real environment, you'd use localStorage)
     function saveHistory() {
         // In a real browser environment, you would use:
-        // localStorage.setItem('fareCalculatorHistory', JSON.stringify(calculationHistory));
+         localStorage.setItem('fareCalculatorHistory', JSON.stringify(calculationHistory));
         console.log('History saved:', calculationHistory);
     }
 
     function loadHistory() {
-        // const saved = localStorage.getItem('fareCalculatorHistory');
-        // if (saved) {
-        //     calculationHistory = JSON.parse(saved);
-        // }
+        const saved = localStorage.getItem('fareCalculatorHistory');
+        if (saved) {
+            calculationHistory = JSON.parse(saved);
+        }
         updateHistoryDisplay();
     }
 
@@ -73,6 +73,7 @@ $(document).ready(function () {
     }
 
    // Updated updateHistoryDisplay function with bold trip purpose and corrected naming
+// Updated updateHistoryDisplay function with bold trip purpose and sandbox amount display
 function updateHistoryDisplay() {
     const historyContainer = $('#historyContainer');
     const historySection = $('#historySection');
@@ -101,8 +102,22 @@ function updateHistoryDisplay() {
         // Format trip type and cabin class for the header
         const tripTypeDisplay = inputs.tripType.charAt(0).toUpperCase() + inputs.tripType.slice(1);
         const cabinClassDisplay = inputs.travelClass.charAt(0).toUpperCase() + inputs.travelClass.slice(1);
-const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' : 
-            inputs.paymentMethod.charAt(0).toUpperCase() + inputs.paymentMethod.slice(1); 
+        const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' : 
+            inputs.paymentMethod.charAt(0).toUpperCase() + inputs.paymentMethod.slice(1);
+        
+        // Calculate sandbox amount if payment method is 'other'
+        let sandboxAmountSection = '';
+        if (inputs.paymentMethod === 'other') {
+            const adults = parseInt(inputs.adults) || 0;
+            const children = parseInt(inputs.children) || 0;
+            const infants = parseInt(inputs.infants) || 0;
+            const passengerCounts = { adults, children, infants };
+            const sandboxAmount = calculateSandboxAmount(result.PCTotalCharges, result, passengerCounts);
+            sandboxAmountSection = `
+                <div class="history-sandbox">
+                    <span style="color: #ff6b35; font-weight: 500; font-size: 10px;">Sandbox Amount: ${sandboxAmount}</span>
+                </div>`;
+        }
                    
         historyHtml += `
             <div class="history-item" data-index="${index}">
@@ -122,7 +137,7 @@ const paymentMethodDisplay = inputs.paymentMethod === 'other' ? 'Gateway' :
                 <div class="history-totals">
                     <div class="history-totals-left">Corporate Card: SAR ${result.CCTotalCharges} • Personal Card: SAR ${result.PCTotalCharges}</div>
                     <div class="history-timestamp">${item.timestamp}</div>
-                </div>
+                </div>${sandboxAmountSection}
             </div>
         `;
     });
